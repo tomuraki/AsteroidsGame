@@ -1,15 +1,129 @@
 //your variable declarations here
+SpaceShip tom=new SpaceShip();
+Star[] sar;
+boolean leftIsPressed=false;
+boolean rightIsPressed=false;
+boolean upIsPressed=false;
+boolean spaceIsPressed=false;
+
 public void setup() 
 {
-  //your code here
+  size(400,400);
+  sar=new Star[100];
+  for(int s=0; s<sar.length; s++)
+    {
+      sar[s]=new Star();
+    }
 }
 public void draw() 
 {
-  //your code here
+  background(0);
+  tom.show();
+  tom.move();
+  if(leftIsPressed==true)
+  {
+    tom.rotate(-2);
+  }
+  if(rightIsPressed==true)
+  {
+    tom.rotate(2);
+  }
+  if(upIsPressed==true)
+  {
+    tom.accelerate(.05);
+  }
+  if(spaceIsPressed==true)
+  {
+    tom.myCenterX=(int)(Math.random()*401);
+    tom.myCenterY=(int)(Math.random()*401);
+  }
+
+  for(int s=0; s<sar.length; s++)
+  {
+    sar[s].show();
+  }
 }
-class SpaceShip //extends Floater  
+public void keyPressed()
+  {
+    if(keyCode==65) //a;turn left
+      {
+        leftIsPressed=true;
+      }
+    else if(keyCode==68) //d;turn right
+      {
+        rightIsPressed=true;
+      }
+    else if(keyCode==87) //w; accelerate foward
+      {
+        upIsPressed=true;
+      }
+    else if(keyCode==32)
+    {
+      spaceIsPressed=true;
+    }  
+  }
+  public void keyReleased()
+  {
+    if(keyCode==65)
+    {
+      leftIsPressed=false;
+    }
+    else if(keyCode==68) 
+    {
+      rightIsPressed=false;
+    }
+    else if(keyCode==87) 
+    {
+      upIsPressed=false;
+    }
+    else if(keyCode==32)
+    {
+      spaceIsPressed=false;
+
+    }
+  }
+  class Star
+  {
+    int x;
+    int y;
+    Star()
+    {
+      x=(int)(Math.random()*401);
+      y=(int)(Math.random()*401);
+    }
+    public void show()
+    {
+      fill(255);
+      ellipse(x,y,3,3);
+    }
+  }
+class SpaceShip extends Floater  
 {   
-    //your code here
+  public SpaceShip()
+  {
+    corners=4;   
+    int[] xS={-8,16,-8,-2};
+    int[] yS={-8,0,8,0};
+    xCorners=xS;
+    yCorners=yS; 
+    myColor=255; 
+    myCenterX=200;
+    myCenterY=200;  
+    myDirectionX=0;
+    myDirectionY=0; 
+    myPointDirection=-50; 
+  }
+    public void setX(int x) {myCenterX=x;}
+    public int getX() {return (int)myCenterX;}
+    public void setY(int y) {myCenterY=y;}
+    public int getY() {return (int)myCenterY;}
+    public void setDirectionX(double x) {myDirectionX=x;}
+    public double getDirectionX() {return myDirectionX;}
+    public void setDirectionY(double y) {myDirectionY=y;}
+    public double getDirectionY() {return myDirectionY;}
+    public void setPointDirection(int degrees) {myPointDirection=degrees;}
+    public double getPointDirection() {return myPointDirection;}
+  
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
@@ -31,7 +145,6 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   abstract public void setPointDirection(int degrees);   
   abstract public double getPointDirection(); 
 
-  //Accelerates the floater in the direction it is pointing (myPointDirection)   
   public void accelerate (double dAmount)   
   {          
     //convert the current direction the floater is pointing to radians    
@@ -42,8 +155,8 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   }   
   public void rotate (int nDegreesOfRotation)   
   {     
-    //rotates the floater by a given number of degrees    
-    myPointDirection+=nDegreesOfRotation;   
+    //rotates the floater by a given number of degrees
+      myPointDirection+=nDegreesOfRotation; 
   }   
   public void move ()   //move the floater in the current direction of travel
   {      
@@ -85,6 +198,8 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
       vertex(xRotatedTranslated,yRotatedTranslated);    
     }   
     endShape(CLOSE);  
-  }   
-} 
+  }  
+}
+
+  
 
