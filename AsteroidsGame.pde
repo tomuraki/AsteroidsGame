@@ -1,6 +1,7 @@
 //your variable declarations here
 SpaceShip tom=new SpaceShip();
 Star[] sar;
+Asteroids[] ash;
 boolean leftIsPressed=false;
 boolean rightIsPressed=false;
 boolean upIsPressed=false;
@@ -11,9 +12,14 @@ public void setup()
   size(400,400);
   sar=new Star[100];
   for(int s=0; s<sar.length; s++)
-    {
-      sar[s]=new Star();
-    }
+  {
+    sar[s]=new Star();
+  }
+  ash=new Asteroids[10];
+  for(int a=0; a<ash.length; a++)
+  {
+    ash[a]=new Asteroids();
+  }  
 }
 public void draw() 
 {
@@ -41,6 +47,11 @@ public void draw()
   for(int s=0; s<sar.length; s++)
   {
     sar[s].show();
+  }
+  for(int a=0; a<ash.length; a++)
+  {
+    ash[a].show();
+    ash[a].move();
   }
 }
 public void keyPressed()
@@ -93,7 +104,7 @@ public void keyPressed()
     }
     public void show()
     {
-      fill(255);
+      fill(255,255,255);
       ellipse(x,y,3,3);
     }
   }
@@ -123,7 +134,40 @@ class SpaceShip extends Floater
     public double getDirectionY() {return myDirectionY;}
     public void setPointDirection(int degrees) {myPointDirection=degrees;}
     public double getPointDirection() {return myPointDirection;}
-  
+}
+class Asteroids extends Floater
+{
+  public Asteroids()
+  {
+    corners=4;
+    int[] xS={-6,-4,7,-12};
+    int[] yS={-5,-5,4,4};
+    xCorners=xS;
+    yCorners=yS;
+    myColor=255;
+    myCenterX=(int)(Math.random()*400)+1;
+    myCenterY=(int)(Math.random()*400)+1;
+    myDirectionX=(int)(Math.random()*10)-5;
+    myDirectionY=(int)(Math.random()*10)-5;
+    rotspeed=(int)(Math.random()*10)+1;
+  }  
+    public void setX(int x) {myCenterX=x;}
+    public int getX() {return (int)myCenterX;}
+    public void setY(int y) {myCenterY=y;}
+    public int getY() {return (int)myCenterY;}
+    public void setDirectionX(double x) {myDirectionX=x;}
+    public double getDirectionX() {return myDirectionX;}
+    public void setDirectionY(double y) {myDirectionY=y;}
+    public double getDirectionY() {return myDirectionY;}
+    public void setPointDirection(int degrees) {myPointDirection=degrees;}
+    public double getPointDirection() {return myPointDirection;}
+    private int rotspeed;
+  public void move()
+  {
+    super.move();
+    myPointDirection+=rotspeed;
+  }  
+
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
