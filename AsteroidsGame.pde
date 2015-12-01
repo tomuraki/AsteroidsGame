@@ -42,6 +42,9 @@ public void draw()
   {
     tom.myCenterX=(int)(Math.random()*401);
     tom.myCenterY=(int)(Math.random()*401);
+    tom.myDirectionX=0;
+    tom.myDirectionY=0;
+    tom.myPointDirection=(int)(Math.random()*360)+1;
   }
 
   for(int s=0; s<sar.length; s++)
