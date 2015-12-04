@@ -2,6 +2,7 @@
 SpaceShip tom=new SpaceShip();
 Star[] sar;
 Asteroids[] ash;
+ArrayList <Asteroids> theList;
 boolean leftIsPressed=false;
 boolean rightIsPressed=false;
 boolean upIsPressed=false;
@@ -15,15 +16,19 @@ public void setup()
   {
     sar[s]=new Star();
   }
-  ash=new Asteroids[10];
-  for(int a=0; a<ash.length; a++)
+  theList=new ArrayList <Asteroids>();
+  for(int i=0; i<7; i++)
   {
-    ash[a]=new Asteroids();
-  }  
+    theList.add(new Asteroids());
+  }
 }
 public void draw() 
 {
   background(0);
+  for(int s=0; s<sar.length; s++)
+  {
+    sar[s].show();
+  }
   tom.show();
   tom.move();
   if(leftIsPressed==true)
@@ -47,15 +52,19 @@ public void draw()
     tom.myPointDirection=(int)(Math.random()*360)+1;
   }
 
-  for(int s=0; s<sar.length; s++)
+  
+  for(int i=0; i<theList.size(); i++)
   {
-    sar[s].show();
+    theList.get(i).show();
+    theList.get(i).move();
   }
-  for(int a=0; a<ash.length; a++)
-  {
-    ash[a].show();
-    ash[a].move();
-  }
+
+  for(int i=0; i<theList.size(); i++)
+    if(dist(theList.get(i).getX(),theList.get(i).getY(),tom.getX(),tom.getY())<20)
+    {
+      theList.remove(i);
+    }
+
 }
 public void keyPressed()
   {
@@ -107,8 +116,9 @@ public void keyPressed()
     }
     public void show()
     {
-      fill(255,255,255);
-      ellipse(x,y,3,3);
+      stroke(0);
+      fill(255,255,0);
+      ellipse(x,y,4,4);
     }
   }
 class SpaceShip extends Floater  
@@ -147,7 +157,7 @@ class Asteroids extends Floater
     int[] yS={-5,-5,4,4};
     xCorners=xS;
     yCorners=yS;
-    myColor=255;
+    myColor=100;
     myCenterX=(int)(Math.random()*400)+1;
     myCenterY=(int)(Math.random()*400)+1;
     myDirectionX=(int)(Math.random()*10)-5;
