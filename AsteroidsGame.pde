@@ -45,11 +45,16 @@ public void draw()
   }
   if(spaceIsPressed==true)
   {
-    tom.myCenterX=(int)(Math.random()*401);
-    tom.myCenterY=(int)(Math.random()*401);
-    tom.myDirectionX=0;
-    tom.myDirectionY=0;
-    tom.myPointDirection=(int)(Math.random()*360)+1;
+    tom.setX((int)(Math.random()*401));
+    tom.getX();
+    tom.setY((int)(Math.random()*401));
+    tom.getY();
+    tom.setDirectionX(0);
+    tom.getDirectionX();
+    tom.setDirectionY(0);
+    tom.getDirectionY();
+    tom.setPointDirection((int)(Math.random()*360)+1);
+    tom.getPointDirection();
   }
 
   
