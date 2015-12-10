@@ -1,8 +1,10 @@
 //your variable declarations here
 SpaceShip tom=new SpaceShip();
+Bullet bobo=new Bullet(tom);
 Star[] sar;
 Asteroids[] ash;
 ArrayList <Asteroids> theList;
+ArrayList <Bullet> bulletList;
 boolean leftIsPressed=false;
 boolean rightIsPressed=false;
 boolean upIsPressed=false;
@@ -21,6 +23,7 @@ public void setup()
   {
     theList.add(new Asteroids());
   }
+  bulletList=new ArrayList <Bullet>();
 }
 public void draw() 
 {
@@ -64,7 +67,29 @@ public void draw()
     theList.get(i).move();
   }
 
+  for(int b=0; b<bulletList.size(); b++)
+  {
+    bulletList.get(b).show();
+    bulletList.get(b).move();
+    if(bulletList.get(b).getAge()>60)
+      bulletList.remove(b);
+  }
+  if(theList.size()==3)
+  {
+    for(int i=0; i<7; i++)
+    {
+      theList.add(new Asteroids());
+    }
+  }
   for(int i=0; i<theList.size(); i++)
+  for(int b=0; b<bulletList.size(); b++)
+    if(dist(theList.get(i).getX(),theList.get(i).getY(),bulletList.get(b).getX(),bulletList.get(b).getY())<20)
+    {
+      theList.remove(i);
+      bulletList.remove(b);
+      break;
+    }
+  for(int i=0; i<theList.size(); i++)  
     if(dist(theList.get(i).getX(),theList.get(i).getY(),tom.getX(),tom.getY())<20)
     {
       theList.remove(i);
@@ -89,6 +114,10 @@ public void keyPressed()
     {
       spaceIsPressed=true;
     }  
+    else if(keyCode==69)
+    {
+      bulletList.add(new Bullet(tom));
+    }
   }
   public void keyReleased()
   {
@@ -140,7 +169,7 @@ class SpaceShip extends Floater
     myCenterY=200;  
     myDirectionX=0;
     myDirectionY=0; 
-    myPointDirection=-50; 
+    myPointDirection=50; 
   }
     public void setX(int x) {myCenterX=x;}
     public int getX() {return (int)myCenterX;}
@@ -169,22 +198,59 @@ class Asteroids extends Floater
     myDirectionY=(int)(Math.random()*10)-5;
     rotspeed=(int)(Math.random()*10)+1;
   }  
-    public void setX(int x) {myCenterX=x;}
-    public int getX() {return (int)myCenterX;}
-    public void setY(int y) {myCenterY=y;}
-    public int getY() {return (int)myCenterY;}
-    public void setDirectionX(double x) {myDirectionX=x;}
-    public double getDirectionX() {return myDirectionX;}
-    public void setDirectionY(double y) {myDirectionY=y;}
-    public double getDirectionY() {return myDirectionY;}
-    public void setPointDirection(int degrees) {myPointDirection=degrees;}
-    public double getPointDirection() {return myPointDirection;}
-    private int rotspeed;
+  public void setX(int x) {myCenterX=x;}
+  public int getX() {return (int)myCenterX;}
+  public void setY(int y) {myCenterY=y;}
+  public int getY() {return (int)myCenterY;}
+  public void setDirectionX(double x) {myDirectionX=x;}
+  public double getDirectionX() {return myDirectionX;}
+  public void setDirectionY(double y) {myDirectionY=y;}
+  public double getDirectionY() {return myDirectionY;}
+  public void setPointDirection(int degrees) {myPointDirection=degrees;}
+  public double getPointDirection() {return myPointDirection;}
+  private int rotspeed;
   public void move()
   {
     super.move();
     myPointDirection+=rotspeed;
   }  
+
+}
+class Bullet extends Floater
+{
+  private int myAge;
+  public Bullet(SpaceShip tom)
+  {
+    myCenterX=tom.getX();
+    myCenterY=tom.getY();
+    myPointDirection=tom.getPointDirection();
+    double dRadians=myPointDirection*(Math.PI/180);
+    myDirectionX=5*Math.cos(dRadians)+tom.getDirectionX();
+    myDirectionY=5*Math.sin(dRadians)+tom.getDirectionY();
+    myAge=0;
+  }
+  public void setX(int x) {myCenterX=x;}
+  public int getX() {return (int)myCenterX;}
+  public void setY(int y) {myCenterY=y;}
+  public int getY() {return (int)myCenterY;}
+  public void setDirectionX(double x) {myDirectionX=x;}
+  public double getDirectionX() {return myDirectionX;}
+  public void setDirectionY(double y) {myDirectionY=y;}
+  public double getDirectionY() {return myDirectionY;}
+  public void setPointDirection(int degrees) {myPointDirection=degrees;}
+  public double getPointDirection() {return myPointDirection;}
+
+  public int getAge()
+  {
+    return myAge;
+  }
+  public void show()
+  {
+    fill(255,0,0);
+    stroke(255,0,0);
+    ellipse((float)myCenterX,(float)myCenterY,5,5);
+    myAge++;
+  }
 
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
